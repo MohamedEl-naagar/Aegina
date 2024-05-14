@@ -19,12 +19,12 @@ app.use(cors())
 // Cookie session middleware
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
-    keys: ["hello world!"]
+    keys: [process.env.SECRET_KEY]
 }));
 
 // Express session middleware
 app.use(session({
-    secret: 'your-secret-key', // Replace with your own secret key
+    secret: process.env.SECRET_KEY, // Replace with your own secret key
     resave: false,
     saveUninitialized: false
 }));
