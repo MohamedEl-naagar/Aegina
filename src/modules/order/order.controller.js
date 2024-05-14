@@ -7,7 +7,7 @@ import { AppError } from "../../utils/AppError.js"
 import Stripe from 'stripe';
 import express from 'express'
 const app =express()
-const stripe = new Stripe('sk_test_51PARxZP6SrcHvNF5iNunn0YsEtwKe8zaIyWtjcggz7DGdEThnKGBv1hhwVwJceFA5hmuiB2u5EpmNhD0gxsOG1XJ00DhAbmw2I');
+const stripe = new Stripe(process.env.stripe);
 
 
 const createCashOrder = catchError(async(req,res,next)=>{
@@ -106,7 +106,7 @@ const createdOnlineOrder = catchError(async(req, res) => {
   
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, "whsec_bkE63JCkMSCWV0rmG0k8ZyzTztyEwm5h");
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.webhooks);
   } catch (err) {
       return res.status(400).send(`Webhook Error: ${err.message}`);
   }
