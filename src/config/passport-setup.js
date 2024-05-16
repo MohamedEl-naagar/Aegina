@@ -19,7 +19,7 @@ userModel.findById({_id:id}).then((user)=>{
 passport.use(new GoogleStrategy({
     clientID: process.env.clientID,
     clientSecret: process.env.clientSecret,
-    callbackURL: "http://localhost:3000/auth/google/redirect"
+    callbackURL: "https://aegina.onrender.com/auth/google/redirect"
   },
 
 
