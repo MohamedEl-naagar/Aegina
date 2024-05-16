@@ -17,7 +17,7 @@ userModel.findById({_id:id}).then((user)=>{
 
 
 passport.use(new GoogleStrategy({
-    clientID: "832444913999-5cbkudlo7vs83nn8mgvs8e5sjcolpagl.apps.googleusercontent.com",
+    clientID: process.env.clientID,
     clientSecret: process.env.clientSecret,
     callbackURL: "http://localhost:3000/auth/google/redirect"
   },
