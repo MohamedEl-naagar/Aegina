@@ -38,7 +38,7 @@ export const bootstrap =(app)=>{
     app.use('/api/v1/cart/',CartRoute)
     app.use('/api/v1/order/',OrderRoute)
     
-    // app.use('/',(req,res) => res.json({message:'hello in Aegina!'}))
+    app.use('/',(req,res) => res.json({message:'hello in Aegina!'}))
     // Gobal Error Handle👌
     app.use(globalError)
 }
