@@ -18,7 +18,7 @@ function calcPrice(cart){
 }
 
 const addCart = catchError(async(req,res,next)=>{
-    let cart = await productModel.findById(req.body.product).select("price title")
+    let cart = await productModel.findById(req.body.product).select("price title createdBy")
     !cart&&next(new AppError("product not found za3bolaaaaa",404))
     
     //UserID :::::: req.user._id
