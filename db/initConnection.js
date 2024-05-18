@@ -6,4 +6,3 @@ export const dbConnection = () => {
     .then(() => console.log("Database Deployment Cloud Mongo Atlas Connected!"))
     .catch((err) => console.log("error in db", err));
 };
-

@@ -12,6 +12,7 @@ import CartRoute from "./modules/cart/cart.routes.js"
 import OrderRoute from "./modules/order/order.routes.js"
 // import routerProfile from "./modules/auth/profile.route.js"
 import passport from "passport"
+import graphqlRoute from "./GraphQL/graphql.routes.js"
 
 export const bootstrap =(app)=>{
 
@@ -37,7 +38,7 @@ export const bootstrap =(app)=>{
     app.use('/api/v1/coupon/',CouponRoute)
     app.use('/api/v1/cart/',CartRoute)
     app.use('/api/v1/order/',OrderRoute)
-    
+    app.use('/api/v1/graphql/',graphqlRoute)
     app.use('/',(req,res) => res.json({message:'hello in Aegina!'}))
     // Gobal Error Handle👌
     app.use(globalError)
