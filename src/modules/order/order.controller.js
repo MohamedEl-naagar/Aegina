@@ -52,8 +52,9 @@ res.json({message:"order added",order})
 
 })
 const getAllOrder = catchError(async(req,res,next)=>{
-    let order = await orderModel.find({user:req.user._id}).populate('orderItems.product')
-    order && res.json({message:"success",order})
+    let orders = await orderModel.find({user:req.user._id}).populate('orderItems.product')
+    const totalOrdersCount = orders.length;
+    order && res.json({message:"success",totalOrdersCount,orders})
     !order && next(new AppError("orders not found for this user",401))
 
 })
@@ -80,7 +81,6 @@ const getCompanyOrder = catchError(async(req,res,next)=>{
         }
     
     })
-
 const deleteOrder = catchError(async(req,res,next)=>{
     let order = await orderModel.findByIdAndDelete(req.params.id);
     order&&res.json({ message: "order deleted", order });
@@ -120,8 +120,6 @@ const createCheckoutURL = catchError(async(req,res,next) => {
 
   res.json({message : "Done", session})
 })
-
-
 
 const createdOnlineOrder = catchError(async(req, res) => {
     const sig = req.headers['stripe-signature']

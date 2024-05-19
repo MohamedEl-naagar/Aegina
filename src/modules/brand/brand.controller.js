@@ -100,7 +100,6 @@ const updateBrand = catchError(async (req, res, next) => {
     update && res.json({ message: "Brand updated successfully", update });
     !update && next(new AppError("Brand not updated", 401));
 });
-
 const deleteBrand =  catchError(async(req,res,next)=>{
     let existingLogo = await brandModel.findById(req.params.id)
     if(!existingLogo){next(new AppError("brand not found", 404));}

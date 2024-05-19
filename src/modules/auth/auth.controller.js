@@ -5,15 +5,13 @@ import bcrypt from 'bcrypt'
 import { AppError } from "../../utils/AppError.js";
 import { sendEmail } from "../../middleware/email/sendEmail.js";
 
-    const signUp = catchError(async(req,res,next)=>{
+const signUp = catchError(async(req,res,next)=>{
         let user = new userModel(req.body)
         let token = jwt.sign({ userId : user._id, role: user.role},process.env.SECRET_KEY)
         await user.save()
         await sendEmail({ email: req.body.email, api: `https://aegina.onrender.com/api/v1/api/v1/user/verify/${token}` });
         res.json({message:"succsess",token})
     })
-
-
 const signIn = catchError(async(req,res,next)=>{
     let user =  await userModel.findOne({ email: req.body.email })
     if(!user){
@@ -29,7 +27,6 @@ const signIn = catchError(async(req,res,next)=>{
 
     next(new AppError("incorrect email or password",401))
 })
-
 const changePassword = catchError(async(req,res,next)=>{
     let user =  await userModel.findById(req.user._id)
     if(user && bcrypt.compareSync(req.body.password,user.password)){
@@ -40,7 +37,6 @@ const changePassword = catchError(async(req,res,next)=>{
     next(new AppError("incorrect email or password",401))
 
 })
-
 const protectedRoutes = catchError(async(req,res,next)=>{
     const {token} = req.headers
         if(!token){
@@ -61,7 +57,6 @@ const protectedRoutes = catchError(async(req,res,next)=>{
     req.user = user
     next()
 })
-
 const allowedTo = (...roles)=>{
     return catchError(async(req,res,next)=>{
 
