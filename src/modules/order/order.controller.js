@@ -111,8 +111,8 @@ const createCheckoutURL = catchError(async(req,res,next) => {
           }
       ],
       mode:"payment",
-      success_url: "https://graduation-project-omega.vercel.app/",
-      cancel_url:"https://graduation-project-omega.vercel.app/",
+      success_url: "https://aegina.onrender.com/",
+      cancel_url:"https://aegina.onrender.com/",
       client_reference_id: req.params.id,
       customer_email:req.user.email,
       metadata: req.body.shippingAddress
