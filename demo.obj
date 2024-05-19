@@ -1,0 +1,54 @@
+{
+    "message": "success",
+    "order": [
+        {
+            "shippingAddress": {
+                "street": "Mahtat Elramel saad zaghlol",
+                "city": "Alexandria Egypt",
+                "phone": "01282219388"
+            },
+            "_id": "66498243d8a468753e8a1cef",
+            "user": "66498214d8a468753e8a1ce2",
+            "orderItems": [
+                {
+                    "product": {
+                        "_id": "66498145d8a468753e8a1cd0",
+                        "title": "hamboza3",
+                        "slug": "hamboza3",
+                        "description": "Buy with installments and pay EGP 68.62 for 48 months with select banks. Learn more \nTake a journey through Ancient Egypt and see how the pharaohs once lived!",
+                        "imageCover": "https://res.cloudinary.com/dzkrp2jvx/image/upload/v1716093251/knmafzgczixqsbucrop5.webp",
+                        "images": [
+                            "https://res.cloudinary.com/dzkrp2jvx/image/upload/v1716093252/lkqcf7u5d14hr7uylbow.webp",
+                            "https://res.cloudinary.com/dzkrp2jvx/image/upload/v1716093253/k8khjhpsx27ycrdhamnr.jpg"
+                        ],
+                        "price": 200,
+                        "imageCoverPublicId": "knmafzgczixqsbucrop5",
+                        "imagesPublicIds": [
+                            "lkqcf7u5d14hr7uylbow",
+                            "k8khjhpsx27ycrdhamnr"
+                        ],
+                        "quantity": 24,
+                        "sold": 1,
+                        "category": "66498053d8a468753e8a1caf",
+                        "brand": "664980bed8a468753e8a1cc6",
+                        "createdBy": "66497fcfd8a468753e8a1ca3",
+                        "createdAt": "2024-05-19T04:34:13.662Z",
+                        "updatedAt": "2024-05-19T04:38:27.695Z",
+                        "__v": 0
+                    },
+                    "quantity": 1,
+                    "price": 200,
+                    "_id": "66498226d8a468753e8a1ce8"
+                }
+            ],
+            "totalOrderPrice": 200,
+            "paymentType": "cash",
+            "isDelivered": false,
+            "isPaid": false,
+            "iscancelled": false,
+            "createdAt": "2024-05-19T04:38:27.544Z",
+            "updatedAt": "2024-05-19T04:38:27.544Z",
+            "__v": 0
+        }
+    ]
+}

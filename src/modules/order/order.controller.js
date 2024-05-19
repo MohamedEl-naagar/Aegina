@@ -6,6 +6,7 @@ import { catchError } from '../../middleware/catchError.js'
 import { AppError } from "../../utils/AppError.js"
 import Stripe from 'stripe';
 import express from 'express'
+import OrderModel from "../../../db/models/order.model.js"
 const app =express()
 const stripe = new Stripe(process.env.stripe);
 
@@ -56,6 +57,30 @@ const getAllOrder = catchError(async(req,res,next)=>{
     !order && next(new AppError("orders not found for this user",401))
 
 })
+const getCompanyOrder = catchError(async(req,res,next)=>{
+    const companyId = req.user._id; // Assuming companyId is passed as a route parameter
+
+    let orders = await orderModel.find({})
+        .populate({
+            path: 'orderItems.product',
+            match: { createdBy: companyId }
+        }).populate({
+            path:'user',
+            select: 'name' // Exclude __v from brand
+
+        });
+        // Filter orders to remove those with no matching products
+        orders = orders.filter(order => order.orderItems.some(item => item.product !== null));
+
+        if (orders.length > 0) {
+            const totalOrdersCount = orders.length;
+            res.json({ message: "success", totalOrdersCount,orders });
+        } else {
+            next(new AppError("Orders not found for this company", 401));
+        }
+    
+    })
+
 const deleteOrder = catchError(async(req,res,next)=>{
     let order = await orderModel.findByIdAndDelete(req.params.id);
     order&&res.json({ message: "order deleted", order });
@@ -162,5 +187,6 @@ createCashOrder,
 getAllOrder,
 deleteOrder,
 createCheckoutURL,
-createdOnlineOrder
+createdOnlineOrder,
+getCompanyOrder
 }
