@@ -34,6 +34,6 @@
     "passport-google-oauth20": "^2.0.0",
     "qrcode": "^1.5.3",
     "slugify": "^1.6.6",
-    "stripe": "^15.4.0"
+    "stripe": "^15.6.0"
   }
 }
