@@ -54,8 +54,8 @@ res.json({message:"order added",order})
 const getAllOrder = catchError(async(req,res,next)=>{
     let orders = await orderModel.find({user:req.user._id}).populate('orderItems.product')
     const totalOrdersCount = orders.length;
-    order && res.json({message:"success",totalOrdersCount,orders})
-    !order && next(new AppError("orders not found for this user",401))
+    orders && res.json({message:"success",totalOrdersCount,orders})
+    !orders && next(new AppError("orders not found for this user",401))
 
 })
 const getCompanyOrder = catchError(async(req,res,next)=>{
