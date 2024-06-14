@@ -33,7 +33,7 @@ const addCart = catchError(async (req, res, next) => {
         path: 'cartItems.product',
         select: '-imagesPublicIds -createdBy -createdAt -updatedAt -__v'
     });
-
+console.log(req.body);
     if (!isCartExist) {
         let cart = new cartModel({
             user: req.user._id,
@@ -43,10 +43,11 @@ const addCart = catchError(async (req, res, next) => {
         await cart.populate({
             path: 'user',
             select: '-__v -createdAt -updatedAt -isBlocked -password -isActive -confirmEmail'
-        }).populate({
-            path: 'cartItems.product',
-            select: '-imagesPublicIds -createdBy -createdAt -updatedAt -__v'
-        }).execPopulate();
+        })
+        await cart.populate({
+                path: 'cartItems.product',
+                select: '-imagesPublicIds -createdBy -createdAt -updatedAt -__v'
+            });
 
         calcPrice(cart);
         await cart.save();
