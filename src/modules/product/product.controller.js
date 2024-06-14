@@ -124,7 +124,9 @@ const updateProduct = catchError(async(req,res,next)=>{
     if(!productExist.createdBy.equals(req.user._id)){
         return next(new AppError("you don't created this product , so you are not authoriaze to update it",401))
     }
-    
+    if (req.body.price) {
+        productExist.price = req.body.price;
+    }
     
     if(req.body.title){
         const existingSubcategory = await productModel.findOne({ title: req.body.title });

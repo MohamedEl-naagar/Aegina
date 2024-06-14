@@ -17,53 +17,79 @@ function calcPrice(cart){
     }
 }
 
-const addCart = catchError(async(req,res,next)=>{
-    let cart = await productModel.findById(req.body.product).select("price title createdBy")
-    !cart&&next(new AppError("product not found za3bolaaaaa",404))
-    
-    //UserID :::::: req.user._id
-    req.body.price = cart.price
-    let isCartExist = await cartModel.findOne({user:req.user._id}).populate(
-        {
+const addCart = catchError(async (req, res, next) => {
+    let product = await productModel.findById(req.body.product).select("price title createdBy");
+    if (!product) {
+        return next(new AppError("product not found za3bolaaaaa", 404));
+    }
+
+    // UserID :::::: req.user._id
+    req.body.price = product.price;
+
+    let isCartExist = await cartModel.findOne({ user: req.user._id }).populate({
         path: 'user',
         select: '-__v -createdAt -updatedAt -isBlocked -password -isActive -confirmEmail'
-    })
-    if(!isCartExist) {
+    }).populate({
+        path: 'cartItems.product',
+        select: '-imagesPublicIds -createdBy -createdAt -updatedAt -__v'
+    });
+
+    if (!isCartExist) {
         let cart = new cartModel({
-        user: req.user._id,
-        cartItems: [req.body]
-        })
-        await cart.populate(
-            {
+            user: req.user._id,
+            cartItems: [req.body]
+        });
+
+        await cart.populate({
             path: 'user',
             select: '-__v -createdAt -updatedAt -isBlocked -password -isActive -confirmEmail'
-        })
-        calcPrice(cart);
-        await cart.save()
-        cart&& res.json({message:"cart added successfully",cart})
-        !cart&& next(new AppError("cart not found",401))
-    }else{ // there is cart
-    let item = isCartExist.cartItems.find((ele)=> ele.product== req.body.product)
-    if(item){
-        item.quantity+=1;
-    }else{
-        isCartExist.cartItems.push(req.body)
-    }
-    calcPrice(isCartExist)
-    if(isCartExist.discount)isCartExist.totalPriceAfterDiscount = isCartExist.totalPrice -(isCartExist.totalPrice*isCartExist.discount)/100;
-    await isCartExist.save()
-    res.json({message:"else",isCartExist})
-    }
-})
+        }).populate({
+            path: 'cartItems.product',
+            select: '-imagesPublicIds -createdBy -createdAt -updatedAt -__v'
+        }).execPopulate();
 
-const getCart = catchError(async(req,res,next)=>{
-    let cart = await cartModel.findOne({ user: req.user._id}).populate({
+        calcPrice(cart);
+        await cart.save();
+
+        if (cart) {
+            return res.json({ message: "cart added successfully", cart });
+        } else {
+            return next(new AppError("cart not found", 401));
+        }
+    } else { // there is cart
+        let item = isCartExist.cartItems.find((ele) => ele.product._id.toString() === req.body.product);
+        if (item) {
+            item.quantity += 1;
+        } else {
+            isCartExist.cartItems.push(req.body);
+        }
+        calcPrice(isCartExist);
+        if (isCartExist.discount) {
+            isCartExist.totalPriceAfterDiscount = isCartExist.totalPrice - (isCartExist.totalPrice * isCartExist.discount) / 100;
+        }
+        await isCartExist.save();
+
+        res.json({ message: "else", isCartExist });
+    }
+});
+
+
+const getCart = catchError(async (req, res, next) => {
+    let cart = await cartModel.findOne({ user: req.user._id }).populate({
         path: 'user',
         select: '-__v -createdAt -updatedAt -isBlocked -password'
-    })
-    cart&&res.json({message:"success",cart})
-    !cart&&next(new AppError("not found cart",401))
-})
+    }).populate({
+        path: 'cartItems.product',
+        select: '-imagesPublicIds -createdBy -createdAt -updatedAt -__v'
+    });
+
+    if (cart) {
+        res.json({ message: "success", cart });
+    } else {
+        next(new AppError("not found cart", 401));
+    }
+});
+
 
 const removeCartItem = catchError(async(req,res,next)=>{
     let cart = await cartModel.findOneAndUpdate({user:req.user._id},{ $pull:{cartItems:{_id:req.params.id}}},{new:true})

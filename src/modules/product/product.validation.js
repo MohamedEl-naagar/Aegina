@@ -68,6 +68,7 @@ const updateProductValidation = Joi.object({
     )
     .optional(),
     updatedImageIndex:Joi.number(),
+    price: Joi.number().min(0).required(),
   images: Joi.array()
     .items(
       Joi.object({
@@ -84,6 +85,6 @@ const updateProductValidation = Joi.object({
       }).required()
     )
     .optional(),
-}).or("title", "imageCover", "images");
+}).or("title", "imageCover", "images","price");
 
 export { addProductValidation, paramsIdValidation, updateProductValidation };
